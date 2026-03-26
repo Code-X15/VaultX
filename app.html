@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="VaultX - Privacy-first, zero-knowledge local vault for passwords, credentials &amp; notes. 100% offline. No data collection. Download APK now.">
+    <title>VaultX • Secure Local Vault</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500&amp;family=Roboto:wght@400;500&amp;display=swap');
+        
+        :root {
+            --tw-color-primary: #ef233c;
+        }
+        
+        * {
+            transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+            transition-duration: 150ms;
+        }
+        
+        .tailwind-ready * {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        }
+        
+        .material-header {
+            font-family: 'Roboto', sans-serif;
+        }
+        
+        .hero-bg {
+            background: radial-gradient(circle at 50% 30%, #1a1a1a 0%, #111111 70%);
+        }
+        
+        .shield-logo {
+            filter: drop-shadow(0 25px 25px rgb(239 35 60 / 0.4));
+            animation: shieldFloat 4s ease-in-out infinite;
+        }
+        
+        @keyframes shieldFloat {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        .download-btn {
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(90deg, #ef233c, #c81e2e);
+            box-shadow: 
+                0 10px 15px -3px rgb(239 35 60 / 0.4),
+                0 4px 6px -4px rgb(239 35 60 / 0.4);
+        }
+        
+        .download-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 40%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            animation: shimmer 4s linear infinite;
+        }
+        
+        @keyframes shimmer {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(400%); }
+        }
+        
+        .download-btn:hover {
+            transform: scale(1.05) translateY(-2px);
+            box-shadow: 
+                0 20px 25px -5px rgb(239 35 60 / 0.5),
+                0 8px 10px -6px rgb(239 35 60 / 0.5);
+        }
+        
+        .section-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .section-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 25px 25px 0 -10px rgb(239 35 60 / 0.15);
+        }
+        
+        .privacy-container {
+            scrollbar-width: thin;
+            scrollbar-color: #ef233c #222;
+        }
+        
+        .nav-link {
+            position: relative;
+        }
+        
+        .nav-link:after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 3px;
+            bottom: -2px;
+            left: 0;
+            background-color: #ef233c;
+        }
+        
+        .nav-link:hover:after {
+            width: 100%;
+        }
+        
+        .logo-glow {
+            animation: logoGlow 2s ease-in-out infinite alternate;
+        }
+    </style>
+</head>
+<body class="tailwind-ready bg-black text-white">
+    <!-- NAVBAR - Material 3 style -->
+    <nav class="bg-[#111111] border-b border-[#222] sticky top-0 z-50">
+        <div class="max-w-screen-2xl mx-auto">
+            <div class="px-8 py-5 flex items-center justify-between">
+                
+                <!-- Logo + Name -->
+                <div class="flex items-center gap-x-4">
+                    <!-- Small Shield Logo -->
+                    <div class="w-10 h-10 flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="44" viewBox="0 0 300 320" class="logo-glow">
+                            <!-- Shield outline (red) -->
+                            <path d="M40 50 L40 210 Q40 270 90 300 L150 320 Q210 300 260 270 L260 50 L40 50 Z" fill="none" stroke="#ef233c" stroke-width="32" stroke-linejoin="round"/>
+                            <!-- Inner black shield -->
+                            <path d="M68 78 L68 188 Q68 228 103 255 L150 272 Q197 228 232 188 L232 78 L68 78 Z" fill="#111111"/>
+                            <!-- Stylized red X inside -->
+                            <line x1="95" y1="115" x2="205" y2="215" stroke="#ef233c" stroke-width="26" stroke-linecap="round"/>
+                            <line x1="205" y1="115" x2="95" y2="215" stroke="#ef233c" stroke-width="26" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                    <h1 class="material-header text-3xl font-medium tracking-[-1px] text-white">VaultX</h1>
+                    <span class="px-3 py-0.5 text-xs font-medium bg-[#ef233c] text-black rounded-3xl flex items-center">v1.0</span>
+                </div>
+
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex items-center gap-x-8 text-sm font-medium">
+                    <a onclick="document.getElementById('features').scrollIntoView({behavior:'smooth'})" class="nav-link cursor-pointer text-white/90 hover:text-white">Features</a>
+                    <a onclick="document.getElementById('privacy').scrollIntoView({behavior:'smooth'})" class="nav-link cursor-pointer text-white/90 hover:text-white">Privacy Policy</a>
+                    <a onclick="document.getElementById('how').scrollIntoView({behavior:'smooth'})" class="nav-link cursor-pointer text-white/90 hover:text-white">How it Works</a>
+                    <a href="https://github.com/Code-X15/VaultX" target="_blank" class="nav-link cursor-pointer text-white/90 hover:text-white flex items-center gap-x-1">
+                        <span>GitHub</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L9 15" /></svg>
+                    </a>
+                </div>
+
+                <!-- Download button in navbar -->
+                <a href="https://github.com/Code-X15/VaultX/releases/download/v1.0/VaultX.apk" 
+                   download="VaultX.apk"
+                   class="hidden sm:flex items-center gap-x-3 bg-[#ef233c] hover:bg-[#c81e2e] text-black font-semibold px-6 py-3 rounded-3xl text-sm shadow-lg">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="4">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v-4m0 0l4 4m-4-4l4-4m12 0v4m0 0l-4-4m4 4l-4 4" />
+                    </svg>
+                    <div>
+                        <div class="text-xs leading-none opacity-75">GET IT FREE</div>
+                        <div class="text-base leading-none font-medium">47.5 MB</div>
+                    </div>
+                </a>
+
+                <!-- Mobile menu button -->
+                <button onclick="toggleMobileMenu()" class="md:hidden w-11 h-11 flex items-center justify-center text-3xl">
+                    <span id="mobile-icon">☰</span>
+                </button>
+            </div>
+            
+            <!-- Mobile Menu -->
+            <div id="mobile-menu" class="hidden px-8 pb-6 md:hidden bg-[#111111] border-t border-[#222]">
+                <div class="flex flex-col gap-y-4 text-lg font-medium">
+                    <a onclick="toggleMobileMenu();document.getElementById('features').scrollIntoView({behavior:'smooth'})" class="py-2">Features</a>
+                    <a onclick="toggleMobileMenu();document.getElementById('privacy').scrollIntoView({behavior:'smooth'})" class="py-2">Privacy Policy</a>
+                    <a onclick="toggleMobileMenu();document.getElementById('how').scrollIntoView({behavior:'smooth'})" class="py-2">How it Works</a>
+                    <a href="https://github.com/Code-X15/VaultX" target="_blank" class="py-2 flex justify-between items-center">
+                        GitHub Repository 
+                        <span class="text-[#ef233c]">→</span>
+                    </a>
+                    <a href="https://github.com/Code-X15/VaultX/releases/download/v1.0/VaultX.apk" 
+                       download="VaultX.apk"
+                       class="mt-4 download-btn text-white flex items-center justify-center gap-x-3 py-6 rounded-3xl text-xl font-semibold">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v-4m0 0l4 4m-4-4l4-4m12 0v4m0 0l-4-4m4 4l-4 4" /></svg>
+                        DOWNLOAD APK • 47.5 MB
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <header class="hero-bg min-h-screen flex items-center pt-16">
+        <div class="max-w-screen-2xl mx-auto px-8 grid md:grid-cols-2 gap-12 items-center">
+            
+            <!-- Left content -->
+            <div class="space-y-8">
+                <div class="inline-flex items-center bg-[#222] text-[#ef233c] text-sm font-medium px-5 h-9 rounded-3xl gap-x-2">
+                    <div class="w-2 h-2 bg-[#ef233c] rounded-full animate-pulse"></div>
+                    ZERO-KNOWLEDGE • 100% LOCAL
+                </div>
+                
+                <h1 class="material-header text-7xl md:text-8xl font-semibold leading-none tracking-[-3px]">
+                    Your vault.<br>Your rules.<br><span class="text-[#ef233c]">No one else’s.</span>
+                </h1>
+                
+                <p class="text-2xl text-white/80 max-w-lg">
+                    VaultX is the ultimate privacy-first password manager and secure notes vault. 
+                    Everything stays on your device. Forever.
+                </p>
+                
+                <div class="flex flex-wrap items-center gap-4">
+                    <!-- Main Download Button - Red + Black expressive Material 3 -->
+                    <a href="https://github.com/Code-X15/VaultX/releases/download/v1.0/VaultX.apk" 
+                       download="VaultX.apk"
+                       class="download-btn flex items-center justify-center gap-x-4 text-2xl font-semibold text-white px-10 py-7 rounded-3xl shadow-2xl group">
+                        
+                        <!-- Mini logo in button -->
+                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="52" viewBox="0 0 300 320" class="group-active:scale-90">
+                            <path d="M40 50 L40 210 Q40 270 90 300 L150 320 Q210 300 260 270 L260 50 L40 50 Z" fill="none" stroke="#111" stroke-width="32" stroke-linejoin="round"/>
+                            <path d="M68 78 L68 188 Q68 228 103 255 L150 272 Q197 228 232 188 L232 78 L68 78 Z" fill="#111"/>
+                            <line x1="95" y1="115" x2="205" y2="215" stroke="#ef233c" stroke-width="26" stroke-linecap="round"/>
+                            <line x1="205" y1="115" x2="95" y2="215" stroke="#ef233c" stroke-width="26" stroke-linecap="round"/>
+                        </svg>
+                        
+                        <div class="text-left">
+                            <div class="flex items-baseline gap-x-3">
+                                <span class="text-4xl">Download VaultX</span>
+                                <span class="text-xl bg-black/30 text-white px-4 py-1 rounded-2xl">47.5 MB</span>
+                            </div>
+                            <div class="text-base opacity-75 font-medium flex items-center gap-x-2">
+                                <span class="text-green-400">✓ Android APK</span>
+                                <span class="text-xs">• Direct • Safe • Instant</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Animated download arrow -->
+                        <div class="flex flex-col items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 group-hover:translate-y-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M19 14l-9-9m0 0L5 5" />
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M19 14l-9 9m9-9v18" />
+                            </svg>
+                            <span class="text-xs font-mono tracking-[3px] mt-1">APK</span>
+                        </div>
+                    </a>
+                    
+                    <div class="text-sm max-w-[180px] leading-tight text-white/70">
+                        No Google Play needed.<br>
+                        Sideloading made safe &amp; simple.<br>
+                        <span class="text-[#ef233c] font-medium">Works on any Android 8.0+</span>
+                    </div>
+                </div>
+                
+                <!-- Trust signals -->
+                <div class="flex items-center gap-x-8 text-white/60 text-sm">
+                    <div class="flex items-center">
+                        <span class="text-[#ef233c]">★</span>
+                        <span class="text-[#ef233c]">★</span>
+                        <span class="text-[#ef233c]">★</span>
+                        <span class="text-[#ef233c]">★</span>
+                        <span class="text-[#ef233c]">★</span>
+                        <span class="ml-2">5.0 • Trusted by privacy lovers</span>
+                    </div>
+                    <div class="h-3 w-px bg-white/30"></div>
+                    <div>Zero data collection</div>
+                    <div class="h-3 w-px bg-white/30"></div>
+                    <div>100% open source</div>
+                </div>
+                
+                <p class="text-xs uppercase tracking-[2px] text-white/50 flex items-center gap-x-2">
+                    <span class="inline-block w-3 h-px bg-white/50"></span>
+                    BUILT FOR EVERY APP STORE — JUST NOT HOSTED ON ONE
+                    <span class="inline-block w-3 h-px bg-white/50"></span>
+                </p>
+            </div>
+            
+            <!-- Right visual - Large animated logo -->
+            <div class="flex justify-center md:justify-end">
+                <div class="relative">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="420" height="450" viewBox="0 0 300 320" class="shield-logo">
+                        <!-- Shield outline (red) -->
+                        <path d="M30 40 L30 210 Q30 280 85 310 L150 330 Q215 280 270 210 L270 40 L30 40 Z" fill="none" stroke="#ef233c" stroke-width="38" stroke-linejoin="round"/>
+                        <!-- Inner black shield -->
+                        <path d="M58 68 L58 198 Q58 248 103 275 L150 292 Q197 248 242 198 L242 68 L58 68 Z" fill="#111111"/>
+                        <!-- Bold red X -->
+                        <line x1="88" y1="105" x2="212" y2="225" stroke="#ef233c" stroke-width="32" stroke-linecap="round"/>
+                        <line x1="212" y1="105" x2="88" y2="225" stroke="#ef233c" stroke-width="32" stroke-linecap="round"/>
+                    </svg>
+                    
+                    <!-- Floating badge -->
+                    <div class="absolute -top-6 -right-6 bg-[#ef233c] text-black text-sm font-bold px-8 h-10 rounded-3xl flex items-center shadow-2xl rotate-12">
+                        ZERO KNOWLEDGE
+                    </div>
+                    
+                    <div class="absolute bottom-12 -left-8 bg-black text-white text-xs font-mono px-6 py-2 rounded-3xl flex items-center gap-x-3 shadow-2xl border border-[#ef233c]/30">
+                        <div class="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
+                        100% OFFLINE
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- FEATURES SECTION -->
+    <section id="features" class="max-w-screen-2xl mx-auto px-8 py-20">
+        <div class="text-center mb-16">
+            <span class="px-6 py-2 bg-[#222] rounded-3xl text-[#ef233c] text-sm font-medium">BUILT DIFFERENT</span>
+            <h2 class="text-5xl font-semibold material-header mt-6">Privacy is the only feature that matters</h2>
+        </div>
+        
+        <div class="grid md:grid-cols-3 gap-8">
+            <!-- Card 1 -->
+            <div class="section-card bg-[#111] rounded-3xl p-8 border border-[#222]">
+                <div class="w-12 h-12 bg-[#ef233c] text-black rounded-2xl flex items-center justify-center text-4xl mb-6">🔒</div>
+                <h3 class="text-3xl font-semibold mb-3">Zero-Knowledge Architecture</h3>
+                <p class="text-white/70 text-lg">We cannot see, access, or recover your data. Ever. Everything is encrypted locally on your device.</p>
+            </div>
+            
+            <!-- Card 2 -->
+            <div class="section-card bg-[#111] rounded-3xl p-8 border border-[#222]">
+                <div class="w-12 h-12 bg-[#ef233c] text-black rounded-2xl flex items-center justify-center text-4xl mb-6">📱</div>
+                <h3 class="text-3xl font-semibold mb-3">100% Local Storage</h3>
+                <p class="text-white/70 text-lg">Passwords, credentials, notes — stored only on your phone. No cloud. No servers. No third parties.</p>
+            </div>
+            
+            <!-- Card 3 -->
+            <div class="section-card bg-[#111] rounded-3xl p-8 border border-[#222]">
+                <div class="w-12 h-12 bg-[#ef233c] text-black rounded-2xl flex items-center justify-center text-4xl mb-6">🌐</div>
+                <h3 class="text-3xl font-semibold mb-3">No Internet Required</h3>
+                <p class="text-white/70 text-lg">Works completely offline. Optional network access only for future updates (clearly disclosed).</p>
+            </div>
+            
+            <!-- Card 4 -->
+            <div class="section-card bg-[#111] rounded-3xl p-8 border border-[#222]">
+                <div class="w-12 h-12 bg-[#ef233c] text-black rounded-2xl flex items-center justify-center text-4xl mb-6">🛡️</div>
+                <h3 class="text-3xl font-semibold mb-3">Industry-Grade Security</h3>
+                <p class="text-white/70 text-lg">Device-level encryption + secure local storage practices. You control your device, you control your vault.</p>
+            </div>
+            
+            <!-- Card 5 -->
+            <div class="section-card bg-[#111] rounded-3xl p-8 border border-[#222]">
+                <div class="w-12 h-12 bg-[#ef233c] text-black rounded-2xl flex items-center justify-center text-4xl mb-6">📝</div>
+                <h3 class="text-3xl font-semibold mb-3">Passwords + Notes Vault</h3>
+                <p class="text-white/70 text-lg">Securely store login credentials, credit cards, private notes — all in one beautiful, private app.</p>
+            </div>
+            
+            <!-- Card 6 -->
+            <div class="section-card bg-[#111] rounded-3xl p-8 border border-[#222]">
+                <div class="w-12 h-12 bg-[#ef233c] text-black rounded-2xl flex items-center justify-center text-4xl mb-6">👤</div>
+                <h3 class="text-3xl font-semibold mb-3">You Own Everything</h3>
+                <p class="text-white/70 text-lg">Delete, export, or reset your data anytime. Full control. No account required.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section id="how" class="bg-[#111111] py-20">
+        <div class="max-w-screen-2xl mx-auto px-8">
+            <div class="grid md:grid-cols-12 gap-12 items-center">
+                <div class="md:col-span-5">
+                    <h2 class="text-5xl font-semibold material-header">Simple. Private. Powerful.</h2>
+                    <p class="mt-6 text-xl text-white/70">VaultX was designed from the ground up to be the most private vault possible.</p>
+                    <ul class="mt-10 space-y-8">
+                        <li class="flex gap-x-4">
+                            <span class="font-mono text-[#ef233c] text-5xl font-semibold">01</span>
+                            <div>
+                                <h4 class="text-2xl">Install &amp; open</h4>
+                                <p class="text-white/70">No sign-up. No account. Just launch the app.</p>
+                            </div>
+                        </li>
+                        <li class="flex gap-x-4">
+                            <span class="font-mono text-[#ef233c] text-5xl font-semibold">02</span>
+                            <div>
+                                <h4 class="text-2xl">Add your data</h4>
+                                <p class="text-white/70">Passwords, notes, credentials — everything stays on your phone.</p>
+                            </div>
+                        </li>
+                        <li class="flex gap-x-4">
+                            <span class="font-mono text-[#ef233c] text-5xl font-semibold">03</span>
+                            <div>
+                                <h4 class="text-2xl">Sleep peacefully</h4>
+                                <p class="text-white/70">We literally cannot see your data. Ever.</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="md:col-span-7 bg-black rounded-3xl p-2 shadow-inner">
+                    <div class="bg-[#222] rounded-3xl p-8 text-center text-white/80 text-xl flex flex-col items-center justify-center h-full min-h-[420px]">
+                        <div class="text-8xl mb-6">🛡️</div>
+                        <p class="text-4xl font-medium">Your data never leaves your device.</p>
+                        <p class="mt-4 max-w-md">No telemetry. No analytics. No backdoors. Just pure privacy.</p>
+                        <div class="mt-auto pt-12 text-xs flex items-center gap-x-8 text-[#ef233c]">
+                            <div>✅ No data transmitted</div>
+                            <div>✅ No cloud sync</div>
+                            <div>✅ No third-party SDKs</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PRIVACY POLICY SECTION -->
+    <section id="privacy" class="max-w-screen-2xl mx-auto px-8 py-20 bg-white text-black">
+        <div class="max-w-4xl mx-auto">
+            <div class="flex justify-between items-baseline mb-8">
+                <div>
+                    <span class="text-[#ef233c] uppercase tracking-widest text-sm font-medium">Official • Transparent • Binding</span>
+                    <h2 class="text-5xl font-semibold material-header">VaultX Privacy Policy</h2>
+                </div>
+                <div class="text-right">
+                    <p class="text-sm font-medium">Effective Date: March 26, 2026</p>
+                </div>
+            </div>
+            
+            <div class="prose prose-lg max-w-none privacy-container bg-[#f8f8f8] rounded-3xl p-10 text-base leading-relaxed">
+                <p><strong>VaultX ("we", "our", or "us")</strong> is committed to protecting your privacy and ensuring transparency in how information is handled. This Privacy Policy explains our practices regarding data collection, usage, storage, and security when you use the VaultX application.</p>
+                
+                <h3 class="text-2xl font-semibold mt-10 mb-3">1. Scope of Policy</h3>
+                <p>This Privacy Policy applies solely to the VaultX mobile application. By using the application, you agree to the terms outlined in this policy.</p>
+                
+                <h3 class="text-2xl font-semibold mt-10 mb-3">2. Information Collection</h3>
+                <p>VaultX is designed with a privacy-first and zero-knowledge architecture.</p>
+                <p><strong>We do NOT collect, store, transmit, or process any personal data on external servers.</strong></p>
+                <p>All user data, including but not limited to passwords, credentials, and notes, is stored locally on the user's device.</p>
+                
+                <h3 class="text-2xl font-semibold mt-10 mb-3">3. Zero-Knowledge Design</h3>
+                <p>VaultX follows a zero-knowledge principle, meaning:</p>
+                <ul class="list-disc pl-6 mt-3 space-y-2">
+                    <li>We have no access to your stored data</li>
+                    <li>We cannot view, retrieve, or recover your information</li>
+                    <li>All data remains fully under your control</li>
+                </ul>
+                
+                <h3 class="text-2xl font-semibold mt-10 mb-3">4. Data Usage</h3>
+                <p>All stored data is used strictly within the application to provide its core functionality. No data is transmitted outside the device.</p>
+                
+                <h3 class="text-2xl font-semibold mt-10 mb-3">5. Data Sharing and Disclosure</h3>
+                <p>We do NOT sell, rent, or share any user data with third parties.</p>
+                <p>Since we do not collect data, there is no data available for disclosure to any entity.</p>
+                
+                <h3 class="text-2xl font-semibold mt-10 mb-3">6. Internet and Network Usage</h3>
+                <p>VaultX does not require an internet connection for its primary features. Any optional network access (if present in future updates) will be clearly disclosed.</p>
+                
+                <h3 class="text-2xl font-semibold mt-10 mb-3">7. Data Security</h3>
+                <p>VaultX implements industry-standard security principles, including:</p>
+                <ul class="list-disc pl-6 mt-3 space-y-2">
+                    <li>Local data protection mechanisms</li>
+                    <li>Secure storage practices</li>
+                    <li>Device-level protection reliance</li>
+                </ul>
+                <p>However, users are responsible for maintaining the security of their device, including screen locks and system protection.</p>
+                
+                <h3 class="text-2xl font-semibold mt-10 mb-3">8. Data Retention</h3>
+                <p>All data remains on your device until you delete it manually or uninstall the application. We do not retain any copies externally.</p>
+                
+                <h3 class="text-2xl font-semibold mt-10 mb-3">9. User Control</h3>
+                <p>You have full control over your data, including the ability to modify, delete, or reset stored information at any time.</p>
+                
+                <h3 class="text-2xl font-semibold mt-10 mb-3">10. Children's Privacy</h3>
+                <p>VaultX does not knowingly collect or process any data from children under the age of 13.</p>
+                
+                <h3 class="text-2xl font-semibold mt-10 mb-3">11. Third-Party Services</h3>
+                <p>VaultX does not integrate with third-party analytics, advertising networks, or tracking services.</p>
+                
+                <h3 class="text-2xl font-semibold mt-10 mb-3">12. Changes to This Privacy Policy</h3>
+                <p>We may update this Privacy Policy periodically. Any changes will be posted on this page with an updated effective date.</p>
+                
+                <h3 class="text-2xl font-semibold mt-10 mb-3">13. Legal Compliance</h3>
+                <p>Although VaultX does not collect user data, we are committed to complying with applicable privacy laws and regulations where required.</p>
+                
+                <h3 class="text-2xl font-semibold mt-10 mb-3">14. Contact Information</h3>
+                <p>If you have any questions regarding this Privacy Policy, you may contact us at:</p>
+                <a href="mailto:doremonxrdx@gmail.com" class="inline-flex items-center gap-x-3 text-[#ef233c] font-medium text-xl">
+                    doremonxrdx@gmail.com
+                    <span class="text-2xl">→</span>
+                </a>
+            </div>
+            
+            <p class="text-center text-xs text-black/60 mt-8">This policy is part of the VaultX application. By downloading and using VaultX, you accept this policy.</p>
+        </div>
+    </section>
+
+    <!-- FINAL CTA -->
+    <div class="bg-black py-16 border-t border-[#222]">
+        <div class="max-w-screen-2xl mx-auto px-8 text-center">
+            <h2 class="text-4xl font-medium">Ready to own your privacy?</h2>
+            <p class="mt-4 text-xl text-white/70">Download VaultX today — the only vault that truly belongs to you.</p>
+            
+            <a href="https://github.com/Code-X15/VaultX/releases/download/v1.0/VaultX.apk" 
+               download="VaultX.apk"
+               class="mt-12 inline-flex download-btn text-white items-center justify-center gap-x-5 text-3xl font-semibold px-16 py-8 rounded-3xl mx-auto">
+                <svg xmlns="http://www.w3.org/2000/svg" width="52" height="56" viewBox="0 0 300 320">
+                    <path d="M30 40 L30 210 Q30 280 85 310 L150 330 Q215 280 270 210 L270 40 L30 40 Z" fill="none" stroke="#111" stroke-width="38" stroke-linejoin="round"/>
+                    <path d="M58 68 L58 198 Q58 248 103 275 L150 292 Q197 248 242 198 L242 68 L58 68 Z" fill="#111"/>
+                    <line x1="88" y1="105" x2="212" y2="225" stroke="#ef233c" stroke-width="32" stroke-linecap="round"/>
+                    <line x1="212" y1="105" x2="88" y2="225" stroke="#ef233c" stroke-width="32" stroke-linecap="round"/>
+                </svg>
+                DOWNLOAD VAULTX APK
+                <div class="text-2xl font-mono bg-black/30 px-6 rounded-2xl py-2">47.5 MB</div>
+            </a>
+            
+            <p class="mt-8 text-white/40 text-sm">• Safe direct download • Verified APK • No account needed • Made with ❤️ for privacy</p>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="bg-[#111] py-12 text-white/60 text-sm">
+        <div class="max-w-screen-2xl mx-auto px-8 flex flex-col md:flex-row justify-between items-center gap-y-4">
+            <div>© 2026 VaultX • All your data, your device, your rules.</div>
+            <div class="flex items-center gap-x-8">
+                <a href="mailto:doremonxrdx@gmail.com" class="hover:text-[#ef233c]">Contact Developer</a>
+                <a href="#privacy" onclick="document.getElementById('privacy').scrollIntoView({behavior:'smooth'})" class="hover:text-[#ef233c]">Privacy Policy</a>
+                <a href="https://github.com/Code-X15/VaultX" target="_blank" class="hover:text-[#ef233c]">GitHub</a>
+                <div class="text-xs px-3 py-1 bg-[#222] rounded-3xl">Made for every app store — built for real privacy</div>
+            </div>
+            <div class="flex items-center gap-x-2">
+                <span class="text-[#ef233c]">v1.0</span>
+                <span class="text-xs">• Android APK</span>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Tailwind initialization
+        function initializeTailwind() {
+            return {
+                config(userConfig = {}) {
+                    return {
+                        content: [],
+                        theme: {
+                            extend: {}
+                        },
+                        ...userConfig,
+                    }
+                },
+                theme() {
+                    return this.defaultTheme ? this.defaultTheme : this.config().theme
+                }
+            }
+        }
+        
+        // Mobile menu toggle
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu')
+            const icon = document.getElementById('mobile-icon')
+            menu.classList.toggle('hidden')
+            if (icon.innerHTML === '☰') {
+                icon.innerHTML = '✕'
+            } else {
+                icon.innerHTML = '☰'
+            }
+        }
+        
+        // Auto-run Tailwind
+        document.addEventListener('DOMContentLoaded', () => {
+            initializeTailwind().config()
+            console.log('%c✅ VaultX HTML landing page ready — Material 3 expressive + fully self-contained', 'color:#ef233c; font-family:monospace')
+        })
+        
+        // Keyboard shortcut for fun (Easter egg)
+        document.addEventListener('keydown', (e) => {
+            if (e.metaKey && e.key === "k") {
+                e.preventDefault()
+                const btns = document.querySelectorAll('.download-btn')
+                btns.forEach(b => b.classList.add('scale-110'))
+                setTimeout(() => btns.forEach(b => b.classList.remove('scale-110')), 600)
+            }
+        })
+    </script>
+</body>
+</html>
